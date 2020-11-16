@@ -14,6 +14,9 @@ namespace Managers.Game
 {
     public class GameManager : BaseManager
     {
+        public delegate void ScoreUpdate(int score);
+        public static event ScoreUpdate OnScoreUpdate;
+
         [SerializeField]
         private List<SpawnPatternData> _spawnPatterns;
         private float _timePlayed;
@@ -27,10 +30,13 @@ namespace Managers.Game
         private int _score;
 
         private static bool _gameOver = false;
-        public static bool GameOver => _gameOver;
+        public static bool IsGameOver => _gameOver;
 
         private float _nextSpawn = 0;
         private int _currentSpawn = 0;
+
+        private int _currentScore;
+        public int CurrentScore => _currentScore;
         public override void OnAwake()
         {
             ManagerProvider.RegisterManager(this, _priority);
@@ -50,9 +56,27 @@ namespace Managers.Game
         {
             _timePlayed = 0f;
             _score = 0;
+            _currentSpawn = 0;
+            _currentWave = 0;
+            _nextSpawn = 0;
             _isPaused = false;
+            _gameOver = false;
             TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
             tM.LoadSceneAsync("Level1"); //not using Await due Fire and Forget
+        }
+
+        public void AddScore(int score)
+        {
+            _currentScore += score;
+            if (OnScoreUpdate != null)
+                OnScoreUpdate.Invoke(_currentScore);
+        }
+
+        public void GameOver()
+        {
+            TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
+            tM.LoadSceneAdditiveAsync("GameOver");
+            _gameOver = true;
         }
 
         private void Update()
@@ -62,9 +86,7 @@ namespace Managers.Game
                 _timePlayed += Time.deltaTime;
                 if(_data.WinCondition.IsConditionMeet())
                 {
-                    TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
-                    tM.LoadSceneAdditiveAsync("GameOver");
-                    _gameOver = true;
+                    GameOver();
                 }
                 if(_timePlayed>=_nextSpawn)
                 {
@@ -86,7 +108,7 @@ namespace Managers.Game
             PoolManager pm = ManagerProvider.GetManager<PoolManager>();
             foreach (var pos in pattern.Patterns)
             {
-                pm.Spawn<EnemyController>(PoolManager.EPool.Enemy1, pos, Quaternion.Euler(0,0,180));
+                pm.Spawn<EnemyController>(PoolManager.EPool.Enemy1, pos, Quaternion.Euler(0,0,180)).gameObject.SetActive(true);
             }
         }
 

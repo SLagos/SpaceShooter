@@ -11,7 +11,7 @@ namespace Controllers.Weapons
     {
         public void OnFire(InputAction.CallbackContext context)
         {
-            if (GameManager.IsPaused || GameManager.GameOver)
+            if (GameManager.IsPaused || GameManager.IsGameOver)
                 return;
             if (context.performed)
             {

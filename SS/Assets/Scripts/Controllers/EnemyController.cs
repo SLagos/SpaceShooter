@@ -22,6 +22,7 @@ namespace Controllers.Enemy
         private WeaponsController _wpController;
 
         private bool _wasOnScreen = false;
+        private bool _givePoints = true;
 
 
 
@@ -29,16 +30,25 @@ namespace Controllers.Enemy
         {
             PoolManager pm = ManagerProvider.GetManager<PoolManager>();
             pm.Despawn(PoolManager.EPool.Enemy1, gameObject);
+            if(_givePoints)
+            {
+                ManagerProvider.GetManager<GameManager>().AddScore(_statsController.GetCurrentPoints());
+            }
             //TODO: Add Explosion VFX
         }
         private void FixedUpdate()
         {
-            if (!GameManager.IsPaused && !GameManager.GameOver)//TODO:Change this accordingly to the game state
+            if (!GameManager.IsPaused && !GameManager.IsGameOver)
             {
                 Vector3 nextPos = transform.position + (Vector3.down * _statsController.GetCurrentSpeed());
                 transform.position = Vector3.SmoothDamp(transform.position, nextPos, ref _currentVelocity, _smoothFactor);
                 _nextShoot += Time.fixedDeltaTime;
                 Fire();
+            }
+            if(GameManager.IsGameOver)
+            {
+                _givePoints = false;
+                Despawn();
             }
         }
 
@@ -77,12 +87,21 @@ namespace Controllers.Enemy
         void OnBecameInvisible()
         {
             if(_wasOnScreen)
+            {
+                _givePoints = false;
                 Despawn();
+            }
+                
         }
 
         private void OnBecameVisible()
         {
             _wasOnScreen = true;
+        }
+
+        private void OnEnable()
+        {
+            _givePoints = true;
         }
     }
 }

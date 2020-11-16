@@ -7,7 +7,7 @@ namespace Data.StatsData
     {
         [SerializeField]
         private Stats _data;
-        public Stats Data => Data;
+        public Stats Data => _data;
 
         /// <summary>
         /// This method its to get a Copy fo Stats struct so it can be handle/modify by the owner at will without
@@ -21,7 +21,8 @@ namespace Data.StatsData
             {
                 Life = _data.Life,
                 Speed = _data.Speed,
-                FireRate = _data.FireRate
+                FireRate = _data.FireRate,
+                Points = _data.Points
             };
 
             return nstats;
@@ -34,5 +35,6 @@ namespace Data.StatsData
         public int Life;
         public float Speed;
         public float FireRate;
+        public int Points;
     }
 }

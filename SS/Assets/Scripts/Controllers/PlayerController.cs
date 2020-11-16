@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using Managers.Game;
+using Managers.Transition;
 
 namespace Controllers.Player
 {
@@ -30,7 +31,7 @@ namespace Controllers.Player
 
         private void FixedUpdate()
         {
-            if(!GameManager.IsPaused && !GameManager.GameOver)//TODO:Change this accordingly to the game state
+            if(!GameManager.IsPaused && !GameManager.IsGameOver)//TODO:Change this accordingly to the game state
             {
                 Vector3 nextPos = transform.position + ((Vector3)_direction * _statsController.GetCurrentSpeed());
                 transform.position = Vector3.SmoothDamp(transform.position, nextPos, ref _currentVelocity, _smoothFactor);
@@ -43,7 +44,7 @@ namespace Controllers.Player
 
         public override void Despawn()
         {
-            throw new System.NotImplementedException();
+            ManagerProvider.GetManager<GameManager>().GameOver();
         }
     }
 }

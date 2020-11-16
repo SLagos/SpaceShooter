@@ -37,6 +37,11 @@ namespace Controllers.StatsNS
             return _currentStats.FireRate;
         }
 
+        public int GetCurrentPoints()
+        {
+            return _currentStats.Points;
+        }            
+
         public void ApplyDamage(int damage)
         {
             _currentStats.Life--;
@@ -44,6 +49,11 @@ namespace Controllers.StatsNS
             {
                 Despawn();
             }
+        }
+
+        public float GetLifeNormalized()
+        {
+           return  (float)_currentStats.Life / (float)_statsData.Data.Life;
         }
 
         private void Despawn()
