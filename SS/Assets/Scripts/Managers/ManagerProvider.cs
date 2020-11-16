@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Managers
@@ -12,9 +14,19 @@ namespace Managers
             return (T)_managers[typeof(T).Name];
         }
 
-        public static void RegisterManager<T>(T manager) where T : BaseManager
+        public static void RegisterManager<T>(T manager, int priority = 0) where T : BaseManager
         {
             _managers.Add(typeof(T).Name, manager);
+        }
+
+        public async static Task InitializeManagers()
+        {
+            //First order the managers by priority then initialize them
+            _managers.OrderBy(v => v.Value.Priority);
+            foreach (var manager in _managers)
+            {
+                await manager.Value.Init();
+            }
         }
     }
 }

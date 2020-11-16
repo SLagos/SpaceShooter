@@ -17,6 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: c77702f181b8cbf4a92373e0d1ece29f
   m_SerializeEntries:
+  - m_GUID: 0247efbda547044478d47ef4b1f9b065
+    m_Address: Assets/Data/GameData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4804d0090fab37346922dfde21a79d58
+    m_Address: Managers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 9597c2a8cb5620b4581ce1389ae23ea5
     m_Address: Bullet
     m_ReadOnly: 0
@@ -31,6 +43,12 @@ MonoBehaviour:
     m_TargetAsset: {fileID: 0}
   - m_GUID: e0cc3ce5ecd4d69429a2092580a6949e
     m_Address: Player
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e8bc2b67c54acf44d96583203f19506b
+    m_Address: HitVfx1
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}

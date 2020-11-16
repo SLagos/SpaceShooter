@@ -120,7 +120,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5698371269153553443}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.7844935, y: 0.7830076, z: 0.33986747}
@@ -136,6 +136,8 @@ GameObject:
   - component: {fileID: 4645870345047197907}
   - component: {fileID: -3130623185903619637}
   - component: {fileID: -6333421952674771812}
+  - component: {fileID: 2802683519994742882}
+  - component: {fileID: 6808056876291775201}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -206,7 +208,7 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -6333421952674771812}
+      - m_Target: {fileID: 6808056876291775201}
         m_MethodName: OnFire
         m_Mode: 0
         m_Arguments:
@@ -276,4 +278,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb8adb17559785428da5a01f5f22517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 15
+  _smoothFactor: 0.5
+--- !u!114 &2802683519994742882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740582394022354653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eadb0765e782e7489803645946122e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statsData: {fileID: 11400000, guid: eb4c5d8449d0595408618f1ffbca5e30, type: 2}
+--- !u!114 &6808056876291775201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740582394022354653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 991a6f3966c283645a1d974352224e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

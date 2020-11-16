@@ -43,9 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62db63ee8e9f3a247abcaac2183d349b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _priority: 1
   _pools:
   - Type: 1
     Object:
       m_AssetGUID: 9597c2a8cb5620b4581ce1389ae23ea5
+      m_SubObjectName: 
+    StartAmount: 20
+  - Type: 2
+    Object:
+      m_AssetGUID: d2e6a05e4705ac34b9ef57031914c107
       m_SubObjectName: 
     StartAmount: 20

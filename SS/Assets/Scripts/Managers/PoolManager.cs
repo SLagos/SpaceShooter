@@ -10,8 +10,10 @@ namespace Managers
     {
         [SerializeField]
         private List<Pool> _pools = new List<Pool>();
-        public async override void Init()
+        public async override Task Init()
         {
+            if (_initialized)
+                return;
             foreach (var pool in _pools)
             {                
                 await pool.Init(this.transform);
@@ -27,7 +29,7 @@ namespace Managers
             obj.transform.position = position;
             obj.transform.rotation = rotation;
 
-            obj.SetActive(true);
+            //obj.SetActive(true);
 
             return obj.GetComponent<T>();
         }
@@ -41,8 +43,7 @@ namespace Managers
 
         public override void OnAwake()
         {
-            ManagerProvider.RegisterManager(this);
-            Init();
+            ManagerProvider.RegisterManager(this,_priority);
         }
 
         [System.Serializable]
@@ -56,11 +57,18 @@ namespace Managers
 
             public async Task Init(Transform parent)
             {
-                GameObject poolRoot = new GameObject(Object.editorAsset.name+"Pool");
+                string poolName = string.Empty;
+                AsyncOperationHandle<GameObject> op = Addressables.LoadAssetAsync<GameObject>(Object);
+                op.Completed += (o) =>
+                {
+                    poolName = o.Result.name;
+                };
+                await op.Task;
+                GameObject poolRoot = new GameObject(poolName+ "Pool");
                 poolRoot.transform.SetParent(parent);
                 _root = poolRoot.transform;
 
-                await Addressables.LoadAssetAsync<GameObject>(Object).Task;
+                
                 for (int i = 0; i < StartAmount; i++)
                 {
                     AsyncOperationHandle<GameObject> handler = Addressables.InstantiateAsync(Object, poolRoot.transform);
@@ -98,7 +106,8 @@ namespace Managers
         public enum EPool
         {
             None = 0,
-            Bullets = 1
+            Bullets = 1,
+            Enemy1 = 2
         }
     }
 }
