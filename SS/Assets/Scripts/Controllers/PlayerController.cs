@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
+using Managers.Game;
 
 namespace Controllers.Player
 {
@@ -21,6 +22,7 @@ namespace Controllers.Player
         [SerializeField]
         private float _smoothFactor = 1f;
 
+
         private void Awake()
         {
             _statsController = GetComponent<StatsController>();
@@ -28,7 +30,7 @@ namespace Controllers.Player
 
         private void FixedUpdate()
         {
-            if(true)//TODO:Change this accordingly to the game state
+            if(!GameManager.IsPaused && !GameManager.GameOver)//TODO:Change this accordingly to the game state
             {
                 Vector3 nextPos = transform.position + ((Vector3)_direction * _statsController.GetCurrentSpeed());
                 transform.position = Vector3.SmoothDamp(transform.position, nextPos, ref _currentVelocity, _smoothFactor);

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02547aeccb85be46b46b445f5379d53, type: 3}
   m_Name: TimedWinCondition
   m_EditorClassIdentifier: 
+  _timeToSurvive: 30

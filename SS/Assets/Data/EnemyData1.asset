@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: EnemyData1
   m_EditorClassIdentifier: 
   _data:
-    Life: 5
-    Speed: 10
+    Life: 2
+    Speed: 1
+    FireRate: 2

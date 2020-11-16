@@ -32,6 +32,11 @@ namespace Controllers.StatsNS
             return _currentStats.Life;
         }
 
+        public float GetCurrentFireRate()
+        {
+            return _currentStats.FireRate;
+        }
+
         public void ApplyDamage(int damage)
         {
             _currentStats.Life--;

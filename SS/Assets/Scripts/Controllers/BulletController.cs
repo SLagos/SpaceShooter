@@ -36,7 +36,12 @@ namespace Controllers.Bullet
         public void Init(int damage, int layerowner)
         {
             _damage = damage;
-            gameObject.layer = layerowner;
+            gameObject.layer= layerowner;
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                GameObject go = gameObject.transform.GetChild(i).gameObject;
+                go.layer = layerowner;
+            }
             gameObject.SetActive(true);
         }
         /// <summary>
@@ -44,7 +49,7 @@ namespace Controllers.Bullet
         /// </summary>
         void OnBecameInvisible()
         {
-            Destroy(gameObject);
+            Despawn();
         }
 
         private void OnCollisionEnter(Collision collision)

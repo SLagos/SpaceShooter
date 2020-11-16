@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class ManagerProvider : MonoBehaviour
+    public class ManagerProvider
     {
         private static Dictionary<string, BaseManager> _managers = new Dictionary<string, BaseManager>();
         public static T GetManager<T>() where T:BaseManager
@@ -19,6 +19,11 @@ namespace Managers
             _managers.Add(typeof(T).Name, manager);
         }
 
+        /// <summary>
+        /// Initialization process to have a controled initialization based on priorities, the higher priority
+        /// will be initializated later
+        /// </summary>
+        /// <returns></returns>
         public async static Task InitializeManagers()
         {
             //First order the managers by priority then initialize them

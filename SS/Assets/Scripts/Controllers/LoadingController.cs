@@ -5,7 +5,5 @@ namespace Controllers.Loading
 {
     public class LoadingController : MonoBehaviour
     {
-        //[SerializeField]
-        //private Image
     }
 }

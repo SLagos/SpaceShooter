@@ -6,19 +6,31 @@ using Data.GameData;
 using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Collections.Generic;
+using Assets.Scripts.Data;
+using Controllers.Enemy;
 
 namespace Managers.Game
 {
     public class GameManager : BaseManager
     {
-
+        [SerializeField]
+        private List<SpawnPatternData> _spawnPatterns;
         private float _timePlayed;
         public float TimePlayed => _timePlayed;
-        private bool _isPaused = true;
-        public bool IsPaused => _isPaused;
+        private int _currentWave = 0;
+        public int CurrentWave => _currentWave;
+        private static bool _isPaused = true;
+        public static bool IsPaused => _isPaused;
 
         private GameData _data;
         private int _score;
+
+        private static bool _gameOver = false;
+        public static bool GameOver => _gameOver;
+
+        private float _nextSpawn = 0;
+        private int _currentSpawn = 0;
         public override void OnAwake()
         {
             ManagerProvider.RegisterManager(this, _priority);
@@ -40,19 +52,49 @@ namespace Managers.Game
             _score = 0;
             _isPaused = false;
             TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
-            tM.LoadScene("Level1"); //not using Await due Fire and Forget
+            tM.LoadSceneAsync("Level1"); //not using Await due Fire and Forget
         }
 
         private void Update()
         {
-            if(!_isPaused)
+            if(!_isPaused && !_gameOver)
             {
                 _timePlayed += Time.deltaTime;
                 if(_data.WinCondition.IsConditionMeet())
                 {
-                    //Win Screen
+                    TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
+                    tM.LoadSceneAdditiveAsync("GameOver");
+                    _gameOver = true;
+                }
+                if(_timePlayed>=_nextSpawn)
+                {
+                    int index = Random.Range(0, _spawnPatterns.Count);
+                    SpawnEnemys(_spawnPatterns[index]);
+                    _nextSpawn = _timePlayed + _data.TimeBetweenSpawn;
+                    _currentSpawn++;
+                    if (_currentSpawn >= _data.SpawnsPerWave)
+                    {
+                        NextWave();
+                    }
+
                 }
             }
+        }
+
+        private void SpawnEnemys(SpawnPatternData pattern)
+        {
+            PoolManager pm = ManagerProvider.GetManager<PoolManager>();
+            foreach (var pos in pattern.Patterns)
+            {
+                pm.Spawn<EnemyController>(PoolManager.EPool.Enemy1, pos, Quaternion.Euler(0,0,180));
+            }
+        }
+
+        private void NextWave()
+        {
+            _currentWave++;
+            _currentSpawn = 0;
+            _nextSpawn = _timePlayed + _data.TimeBetweenWave;
         }
     }
 }

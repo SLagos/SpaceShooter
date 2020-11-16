@@ -44,3 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _priority: 1
+  _spawnPatterns:
+  - {fileID: 11400000, guid: 137f9af2c7e9b604b92911cd70f2f3d0, type: 2}
+  - {fileID: 11400000, guid: 250d26f82ea72214a81466806ad64bad, type: 2}
+  - {fileID: 11400000, guid: c7be4ec3694b4404a9be02a000d26da6, type: 2}
+  - {fileID: 11400000, guid: d24e732102726d346a4e18872ff1fb14, type: 2}
+  - {fileID: 11400000, guid: ec2ed9fc2b905aa43aa96699915063a2, type: 2}

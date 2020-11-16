@@ -20,7 +20,7 @@ namespace Managers.Transition
             ManagerProvider.RegisterManager(this, _priority);
         }
 
-        public async Task LoadScene(string sceneName)
+        public async Task LoadSceneAsync(string sceneName)
         {
             //_lController.ActiveTransition();
             Scene currentScene = SceneManager.GetActiveScene();
@@ -30,6 +30,20 @@ namespace Managers.Transition
 
             //_lController.HideTransition();
 
+        }
+        public async Task LoadSceneAdditiveAsync(string sceneName)
+        {
+            //_lController.ActiveTransition();
+            await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+            //_lController.HideTransition();
+
+        }
+
+        public async Task UnloadLastScene()
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            await SceneManager.UnloadSceneAsync(currentScene);
         }
 
 

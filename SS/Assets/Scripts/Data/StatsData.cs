@@ -20,7 +20,8 @@ namespace Data.StatsData
             Stats nstats = new Stats()
             {
                 Life = _data.Life,
-                Speed = _data.Speed
+                Speed = _data.Speed,
+                FireRate = _data.FireRate
             };
 
             return nstats;
@@ -32,5 +33,6 @@ namespace Data.StatsData
     {
         public int Life;
         public float Speed;
+        public float FireRate;
     }
 }

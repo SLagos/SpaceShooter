@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3658775ae178c2489306795cb389045, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  _winCondition: {fileID: 11400000, guid: 312cc2becfeeb9040a82c4530e731e9f, type: 2}
+  _winCondition: {fileID: 11400000, guid: 97729d66ac739b54ca60317ea0253786, type: 2}
+  _timeBetweenSpawn: 2
+  _spawnsPerWave: 3
+  _timeBetweenWave: 3
