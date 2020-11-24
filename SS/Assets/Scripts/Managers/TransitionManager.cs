@@ -32,12 +32,8 @@ namespace Managers.Transition
 
         }
         public async Task LoadSceneAdditiveAsync(string sceneName)
-        {
-            //_lController.ActiveTransition();
+        {            
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-            //_lController.HideTransition();
-
         }
 
         public async Task UnloadLastScene()

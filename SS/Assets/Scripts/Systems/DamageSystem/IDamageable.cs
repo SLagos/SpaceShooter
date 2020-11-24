@@ -9,7 +9,6 @@ namespace Systems.DamageSystem
     }
     public struct DamageInfo
     {
-        public int Damage;
-        public GameObject Owner;
+        public int Damage;       
     }
 }

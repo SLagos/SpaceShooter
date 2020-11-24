@@ -19,5 +19,10 @@ namespace Data.GameData
         [SerializeField]
         private float _timeBetweenWave;
         public float TimeBetweenWave => _timeBetweenWave;
+
+        [SerializeField]
+        private int _playersLives;
+
+        public int PlayersLives;
     }
 }

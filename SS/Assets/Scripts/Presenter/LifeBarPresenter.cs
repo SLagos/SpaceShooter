@@ -16,8 +16,7 @@ namespace Presenter.BarLife
         [SerializeField]
         private float _yOffset;
         [SerializeField]
-        private Animator _animator;
-
+        private Animator _animatorHealthBar,_animDecal;
         private StatsController _statsController;
 
         private Camera _camera;
@@ -26,16 +25,28 @@ namespace Presenter.BarLife
         {
             _statsController = GetComponent<StatsController>();
             _camera = Camera.main;
+            _statsController.OnDamageReceived += HealthUpdate;
+
         }
 
-        private void Update()
+        private void Start()
         {
-           Vector3 screenPos = _camera.WorldToScreenPoint(transform.position);
-            screenPos.y += _yOffset;
-            _container.transform.position = screenPos;
+            HealthUpdate();
+        }
+        private void HealthUpdate()
+        {
             float lifeNormalized = _statsController.GetLifeNormalized();
             _lifeBar.fillAmount = lifeNormalized;
-            _animator.SetFloat("NormalizedLife", lifeNormalized);
+            _animatorHealthBar.SetFloat("NormalizedLife", lifeNormalized);
+            UpdateDecal(lifeNormalized);
+        }
+
+        private void UpdateDecal(float value)
+        {
+            if(_animDecal != null)
+            {
+                _animDecal.SetFloat("DamageNormalized", 1 - value);
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Controllers.StatsNS
     [RequireComponent(typeof(EntityController))]
     public class StatsController : MonoBehaviour
     {
+        public delegate void DamageReceived();
+        public event DamageReceived OnDamageReceived;
         //TODO: Move this to addressables
         [SerializeField]
         private StatsData _statsData;
@@ -49,6 +51,8 @@ namespace Controllers.StatsNS
             {
                 Despawn();
             }
+            if (OnDamageReceived != null)
+                OnDamageReceived();
         }
 
         public float GetLifeNormalized()

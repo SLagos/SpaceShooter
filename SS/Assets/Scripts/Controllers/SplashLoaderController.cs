@@ -24,7 +24,7 @@ namespace Controllers.SplashLoader
 
             await ManagerProvider.InitializeManagers();
             GameManager gm = ManagerProvider.GetManager<GameManager>();
-            gm.StartGame();
+            await gm.StartGame();
         }
     }
 }

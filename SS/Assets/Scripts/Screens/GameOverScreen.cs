@@ -40,7 +40,7 @@ namespace Screens.GameOver
         private async void Replay()
         {
             await ManagerProvider.GetManager<TransitionManager>().UnloadLastScene();
-            ManagerProvider.GetManager<GameManager>().StartGame();
+            await ManagerProvider.GetManager<GameManager>().StartGame();
         }
     }
 }

@@ -21,6 +21,13 @@ namespace Systems.PoolSystem
 
         public T Spawn<T>(EPool poolType, Vector3 position ,Quaternion rotation,Transform parent = null)
         {
+            var obj = Spawn(poolType, position, rotation, parent);
+
+            return obj.GetComponent<T>();
+        }
+
+        public GameObject Spawn(EPool poolType, Vector3 position, Quaternion rotation, Transform parent = null)
+        {
             Pool pool = _pools.Find(p => p.Type == poolType);
             GameObject obj = pool.GetObject();
             if (parent != null)
@@ -28,9 +35,7 @@ namespace Systems.PoolSystem
             obj.transform.position = position;
             obj.transform.rotation = rotation;
 
-            //obj.SetActive(true);
-
-            return obj.GetComponent<T>();
+            return obj;
         }
 
         public void Despawn(EPool poolType, GameObject obj)

@@ -36,6 +36,9 @@ namespace Managers.Game
 
         private int _currentScore;
         public int CurrentScore => _currentScore;
+
+        private int _currentLives;
+        public int CurrentLifes => _currentLives;
         public override void OnAwake()
         {
             ManagerProvider.RegisterManager(this, _priority);
@@ -51,7 +54,7 @@ namespace Managers.Game
             await op.Task;
         }
 
-        public void StartGame()
+        public async Task StartGame()
         {
             _timePlayed = 0f;
             _score = 0;
@@ -60,8 +63,9 @@ namespace Managers.Game
             _nextSpawn = 0;
             _isPaused = false;
             _gameOver = false;
+            _currentLives = _data.PlayersLives;
             TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
-            tM.LoadSceneAsync("Level1"); //not using Await due Fire and Forget
+            await tM.LoadSceneAsync("Level1"); //not using Await due Fire and Forget
         }
 
         public void AddScore(int score)

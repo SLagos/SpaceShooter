@@ -76,11 +76,12 @@ namespace Controllers.Bullet
             var cHandler = collision.collider.GetComponent<CollisionHandler>();
             cHandler.NotifyCollision(new DamageInfo
             {
-                Damage = _damage,
-                Owner = this.gameObject
+                Damage = _damage
             });
             Despawn();
-            Addressables.InstantiateAsync("HitVfx1", position: collision.contacts[0].point, Quaternion.identity); //Add this to pool
+            var pm = ManagerProvider.GetManager<PoolManager>();
+            var vfx = pm.Spawn(EPool.HitVfx, collision.GetContact(0).point, Quaternion.identity);
+            vfx.SetActive(true);
         }
 
         public override void Despawn()

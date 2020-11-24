@@ -49,9 +49,14 @@ MonoBehaviour:
     Object:
       m_AssetGUID: 9597c2a8cb5620b4581ce1389ae23ea5
       m_SubObjectName: 
-    StartAmount: 20
+    StartAmount: 50
   - Type: 2
     Object:
       m_AssetGUID: d2e6a05e4705ac34b9ef57031914c107
       m_SubObjectName: 
     StartAmount: 20
+  - Type: 4
+    Object:
+      m_AssetGUID: e8bc2b67c54acf44d96583203f19506b
+      m_SubObjectName: 
+    StartAmount: 50
