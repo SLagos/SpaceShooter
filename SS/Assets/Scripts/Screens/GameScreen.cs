@@ -17,11 +17,11 @@ namespace Screens.GameScreen
         {
             _gManager = ManagerProvider.GetManager<GameManager>();
             GameManager.OnScoreUpdate += UpdateScore;
-            _scoreLabel.text = "Score: " + _gManager.CurrentScore.ToString();
+            _scoreLabel.text = _gManager.CurrentScore.ToString();
         }
         private void UpdateScore(int score)
         {
-            _scoreLabel.text = "Score: " + score.ToString();
+            _scoreLabel.text = score.ToString();
         }
 
         private void OnDestroy()

@@ -1,27 +1,36 @@
-﻿using Managers;
+﻿using Controllers.Entity;
+using Managers;
+using Managers.Game;
+using Systems.PoolSystem;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Systems.DamageSystem;
 
 namespace Controllers.Bullet
 {
     /// <summary>
     /// This script handle the movement and the logic
     /// </summary>
-    public class BulletController : MonoBehaviour
+    public class BulletController : EntityController, IDamageable
     {
         [SerializeField]
         private float _speed = 15f;
+        [SerializeField]
+        private float _lifeSpan = 3f;
+        [SerializeField]
+        private CollisionHandler _cHandler;
 
         private int _damage = 0;
+
+        private Coroutine _destroyRoutine;
 
         /// <summary>
         /// Using fixed update to handle positions and collisions at the same rate to avoid issues
         /// </summary>
         private void FixedUpdate()
         {
-            if (true)//TODO:Change this accordingly to the game state
+            if (!GameManager.IsPaused && !GameManager.IsGameOver)
             {
                 transform.position += (transform.up * _speed * Time.fixedDeltaTime);
             }
@@ -43,32 +52,55 @@ namespace Controllers.Bullet
                 go.layer = layerowner;
             }
             gameObject.SetActive(true);
+            _destroyRoutine = StartCoroutine(DespawnRoutine());
+            _cHandler.Init(this);
+            _cHandler.OnCollision += OnCollision;
         }
+
         /// <summary>
         /// Easy way to check if this object is being render by any camera, so i can dispose it.
+        /// <ref href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnBecameInvisible.html">Unity Doc</ref>
+        /// This doesn't work on editor due to Editor's Cameras is always looking at the scene
         /// </summary>
         void OnBecameInvisible()
         {
+            if (_destroyRoutine != null)
+                StopCoroutine(_destroyRoutine);
             Despawn();
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollision(Collision collision)
         {
-            DoDamage(collision.gameObject, collision.GetContact(0).point);
+            if (_destroyRoutine != null)
+                StopCoroutine(_destroyRoutine);
+            var cHandler = collision.collider.GetComponent<CollisionHandler>();
+            cHandler.NotifyCollision(new DamageInfo
+            {
+                Damage = _damage,
+                Owner = this.gameObject
+            });
             Despawn();
+            Addressables.InstantiateAsync("HitVfx1", position: collision.contacts[0].point, Quaternion.identity); //Add this to pool
         }
 
-        private void DoDamage(GameObject collidedGo, Vector3 hitPoint)
+        public override void Despawn()
         {
-            collidedGo.SendMessageUpwards("ApplyDamage", _damage, SendMessageOptions.DontRequireReceiver);
-            //Move this to a better system that use the poolsystem
-            Addressables.InstantiateAsync("HitVfx1", position: hitPoint, Quaternion.identity);
+            gameObject.SetActive(false);
+            var pm = ManagerProvider.GetManager<PoolManager>();
+            pm.Despawn(EPool.Bullets, gameObject);
+            _cHandler.OnCollision -= OnCollision;
         }
 
-        private void Despawn()
+        private IEnumerator DespawnRoutine()
         {
-            PoolManager pm = ManagerProvider.GetManager<PoolManager>();
-            pm.Despawn(PoolManager.EPool.Bullets, gameObject);
+            yield return new WaitForSeconds(_lifeSpan);
+            Despawn();
+            _destroyRoutine = null;
+        }
+
+        public void ReceiveDamage(DamageInfo info)
+        {
+            //This do nothing due bullet being destroy at the moment of the collision, can be used if we want some penetration bullets or different behaviours
         }
     }
 }

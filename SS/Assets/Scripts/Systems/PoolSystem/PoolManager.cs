@@ -1,12 +1,9 @@
 ﻿using Managers;
-using Patterns.Observer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace PoolSystem
+namespace Systems.PoolSystem
 {
     public class PoolManager : BaseManager
     {
@@ -22,7 +19,7 @@ namespace PoolSystem
             }
         }
 
-        public T Spawn<T>(EPool poolType, Vector3 position ,Quaternion rotation,Transform parent = null) where T : ISubject
+        public T Spawn<T>(EPool poolType, Vector3 position ,Quaternion rotation,Transform parent = null)
         {
             Pool pool = _pools.Find(p => p.Type == poolType);
             GameObject obj = pool.GetObject();

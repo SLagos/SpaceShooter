@@ -18,8 +18,13 @@ namespace Utils
             return xBound && yBound;
         }
 
+        /// <summary>
+        /// Return a valid position With in boundries based on the position given
+        /// </summary>
+        /// <param name="pos">Position given</param>
+        /// <returns>A position with in boundries of the screen</returns>
         public static Vector3 GetValidPosition(Vector3 pos)
-        {
+        {       
             if (InScreenBounds(pos))
                 return pos;
             Vector3 newPos;
@@ -35,7 +40,7 @@ namespace Utils
 
             pos.z = 10;
             newPos = Camera.main.ScreenToWorldPoint(pos);
-            return newPos;
+            return newPos;            
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Controllers.Enemy;
-using PoolSystem;
+using Systems.PoolSystem;
 
 namespace Managers.Game
 {
@@ -73,6 +73,8 @@ namespace Managers.Game
 
         public void GameOver()
         {
+            if (_gameOver)
+                return;
             TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
             tM.LoadSceneAdditiveAsync("GameOver");
             _gameOver = true;
