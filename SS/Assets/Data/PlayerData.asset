@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   _data:
-    Life: 10
+    Life: 5
     Speed: 3.5
+    FireRate: 0
+    Points: 0

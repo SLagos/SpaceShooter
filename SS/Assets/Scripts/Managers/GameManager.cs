@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Controllers.Enemy;
 using Systems.PoolSystem;
+using Controllers.Player;
 
 namespace Managers.Game
 {
@@ -16,8 +17,13 @@ namespace Managers.Game
         public delegate void ScoreUpdate(int score);
         public static event ScoreUpdate OnScoreUpdate;
 
+        public delegate void LivesUpdate(int lives);
+        public static event LivesUpdate OnLivesUpdate;
+
         [SerializeField]
         private List<SpawnPatternData> _spawnPatterns;
+        [SerializeField]
+        private AssetReference _gameDataRef;
         private float _timePlayed;
         public float TimePlayed => _timePlayed;
         private int _currentWave = 0;
@@ -26,6 +32,7 @@ namespace Managers.Game
         public static bool IsPaused => _isPaused;
 
         private GameData _data;
+        public GameData Data => _data;
         private int _score;
 
         private static bool _gameOver = false;
@@ -39,6 +46,8 @@ namespace Managers.Game
 
         private int _currentLives;
         public int CurrentLifes => _currentLives;
+
+        private PlayerController _playerController;
         public override void OnAwake()
         {
             ManagerProvider.RegisterManager(this, _priority);
@@ -46,16 +55,26 @@ namespace Managers.Game
 
         public override async Task Init()
         {
-            AsyncOperationHandle<GameData> op = Addressables.LoadAssetAsync<GameData>("GameData");
+            AsyncOperationHandle<GameData> op = Addressables.LoadAssetAsync<GameData>(_gameDataRef);
             op.Completed += (o) =>
             {
                 _data = o.Result;
             };
             await op.Task;
+            _initialized = true;
         }
 
         public async Task StartGame()
         {
+            TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
+            await tM.LoadSceneAsync(_data.LevelId);
+
+            var op = Addressables.LoadAssetAsync<GameObject>(_data.PlayerAddress);
+            await op.Task;
+            Addressables.InstantiateAsync(_data.PlayerAddress).Completed += (obj)=>
+            {
+                _playerController = obj.Result.GetComponent<PlayerController>();
+            }; //This is already preloaded due "LoadAssetAsync" so its in memory
             _timePlayed = 0f;
             _score = 0;
             _currentSpawn = 0;
@@ -64,8 +83,8 @@ namespace Managers.Game
             _isPaused = false;
             _gameOver = false;
             _currentLives = _data.PlayersLives;
-            TransitionManager tM = ManagerProvider.GetManager<TransitionManager>();
-            await tM.LoadSceneAsync("Level1"); //not using Await due Fire and Forget
+            OnLivesUpdate(_currentLives);
+
         }
 
         public void AddScore(int score)
@@ -106,6 +125,19 @@ namespace Managers.Game
 
                 }
             }
+        }
+
+        internal void PlayerDie()
+        {
+            _currentLives--;
+            if (OnLivesUpdate != null)
+                OnLivesUpdate(_currentLives);
+            if (_currentLives > 0)
+            {
+                StartCoroutine(_playerController.RespawnRoutine());
+            }
+            else
+                GameOver();
         }
 
         private void SpawnEnemys(SpawnPatternData pattern)

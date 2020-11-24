@@ -16,3 +16,9 @@ MonoBehaviour:
   _timeBetweenSpawn: 2
   _spawnsPerWave: 3
   _timeBetweenWave: 3
+  _playersLives: 3
+  _playerRespawnTime: 2
+  _playerSpawnPoint: {x: 0, y: 0, z: 0}
+  _playerAddress: Player
+  _levelId: Level1
+  _keyHighScoreSavedData: score

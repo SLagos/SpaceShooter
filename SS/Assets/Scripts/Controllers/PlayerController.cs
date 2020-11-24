@@ -28,6 +28,17 @@ namespace Controllers.Player
         [SerializeField]
         private CollisionHandler _cHandler;
 
+        private GameManager _gManager;
+        private GameManager gManager
+        {
+            get
+            {
+                if (_gManager == null)
+                    _gManager = ManagerProvider.GetManager<GameManager>();
+                return _gManager;
+            }
+        }
+
 
         private void Awake()
         {
@@ -51,8 +62,6 @@ namespace Controllers.Player
                 }
                     
             }
-            if (GameManager.IsGameOver)
-                gameObject.SetActive(false);
 
         }
         public void OnMove(InputAction.CallbackContext context)
@@ -63,13 +72,21 @@ namespace Controllers.Player
         public override void Despawn()
         {
             //Change this to only happen when no lifes remains
-            ManagerProvider.GetManager<GameManager>().GameOver();
             this.gameObject.SetActive(false);
+            gManager.PlayerDie();
         }
 
         public void ReceiveDamage(DamageInfo info)
         {
             _statsController.ApplyDamage(info.Damage);
+        }
+
+        public IEnumerator RespawnRoutine()
+        {
+            yield return new WaitForSeconds(gManager.Data.PlayerRespawnTime);
+            transform.position = gManager.Data.PlayerSpawnPoint;
+            gameObject.SetActive(true);
+            _statsController.ResetStats();
         }
 
     }

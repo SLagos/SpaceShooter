@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using Data.GameData;
+using Managers;
 using Managers.Game;
 using Managers.Transition;
 using System.Collections;
@@ -19,9 +20,21 @@ namespace Screens.GameOver
         [SerializeField]
         private GameObject _newRecord;
 
+        private GameManager _gManager;
+        private GameManager GManager
+        {
+            get
+            {
+                if (_gManager == null)
+                    _gManager = ManagerProvider.GetManager<GameManager>();
+                return _gManager;
+            }
+        }
+
         private void Start()
         {
-            int highScore = PlayerPrefs.HasKey("score") ? PlayerPrefs.GetInt("score"): 0;
+            string scoreKey = GManager.Data.KeyHighScoreSavedData;
+            int highScore = PlayerPrefs.HasKey(scoreKey) ? PlayerPrefs.GetInt(scoreKey) : 0;
             int currentScore = ManagerProvider.GetManager<GameManager>().CurrentScore;
             _highScoreLabel.text = (highScore> currentScore )?highScore.ToString(): currentScore.ToString();
             _scoreLabel.text = currentScore.ToString();
@@ -29,7 +42,7 @@ namespace Screens.GameOver
             replayBtn.onClick.AddListener(Replay);
             _newRecord.SetActive(currentScore > highScore);
             if (currentScore > highScore)
-                PlayerPrefs.SetInt("score", currentScore);
+                PlayerPrefs.SetInt(scoreKey, currentScore);
         }
 
         private void ExitGame()
@@ -40,7 +53,7 @@ namespace Screens.GameOver
         private async void Replay()
         {
             await ManagerProvider.GetManager<TransitionManager>().UnloadLastScene();
-            await ManagerProvider.GetManager<GameManager>().StartGame();
+            await GManager.StartGame();
         }
     }
 }

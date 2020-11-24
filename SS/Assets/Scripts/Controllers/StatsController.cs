@@ -24,6 +24,13 @@ namespace Controllers.StatsNS
             _currentStats = _statsData.GetStats();
         }
 
+        public void ResetStats()
+        {
+            _currentStats = _statsData.GetStats();
+            if (OnDamageReceived != null)
+                OnDamageReceived();
+        }
+
         public float GetCurrentSpeed()
         {
             return _currentStats.Speed;

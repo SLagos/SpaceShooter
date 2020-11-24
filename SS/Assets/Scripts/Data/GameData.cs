@@ -23,6 +23,25 @@ namespace Data.GameData
         [SerializeField]
         private int _playersLives;
 
-        public int PlayersLives;
+        public int PlayersLives => _playersLives;
+
+        [SerializeField]
+        private float _playerRespawnTime;
+        public float PlayerRespawnTime=> _playerRespawnTime;
+
+        [SerializeField]
+        private Vector3 _playerSpawnPoint;
+        public Vector3 PlayerSpawnPoint => _playerSpawnPoint;
+
+        [SerializeField]
+        private string _playerAddress;
+        public string PlayerAddress => _playerAddress;
+        [SerializeField]
+        private string _levelId;
+        public string LevelId => _levelId;
+
+        [SerializeField]
+        private string _keyHighScoreSavedData;
+        public string KeyHighScoreSavedData => _keyHighScoreSavedData;
     }
 }

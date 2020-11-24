@@ -35,6 +35,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: c8c0b5413c4d7a743944bb95d076668d
+    m_Address: LifeUIVisual
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: d2e6a05e4705ac34b9ef57031914c107
     m_Address: EnemyBase
     m_ReadOnly: 0

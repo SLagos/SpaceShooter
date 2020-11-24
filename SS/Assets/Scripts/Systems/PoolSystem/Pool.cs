@@ -14,6 +14,7 @@ namespace Systems.PoolSystem
         public int StartAmount;
         private Stack<GameObject> _objects = new Stack<GameObject>();
         private Transform _root;
+        private string _poolSufix = "Pool";
 
         public async Task Init(Transform parent)
         {
@@ -24,7 +25,7 @@ namespace Systems.PoolSystem
                 poolName = o.Result.name;
             };
             await op.Task;
-            GameObject poolRoot = new GameObject(poolName + "Pool");
+            GameObject poolRoot = new GameObject(poolName + _poolSufix);
             poolRoot.transform.SetParent(parent);
             _root = poolRoot.transform;
 
