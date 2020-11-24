@@ -1,6 +1,7 @@
 ﻿using Controllers.Bullet;
 using Managers;
 using Managers.Game;
+using PoolSystem;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,7 +23,7 @@ namespace Controllers.Weapons
         public void Fire()
         {
             PoolManager pm = ManagerProvider.GetManager<PoolManager>();
-            BulletController bc = pm.Spawn<BulletController>(PoolManager.EPool.Bullets, transform.position, transform.rotation);
+            BulletController bc = pm.Spawn<BulletController>(EPool.Bullets, transform.position, transform.rotation);
             bc.Init(1, gameObject.layer);
         }
 

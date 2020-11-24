@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using Managers;
+﻿using UnityEngine;
 using Managers.Transition;
 using Data.GameData;
 using System.Threading.Tasks;
@@ -9,6 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Controllers.Enemy;
+using PoolSystem;
 
 namespace Managers.Game
 {
@@ -108,7 +107,7 @@ namespace Managers.Game
             PoolManager pm = ManagerProvider.GetManager<PoolManager>();
             foreach (var pos in pattern.Patterns)
             {
-                pm.Spawn<EnemyController>(PoolManager.EPool.Enemy1, pos, Quaternion.Euler(0,0,180)).gameObject.SetActive(true);
+                pm.Spawn<EnemyController>(EPool.Enemy1, pos, Quaternion.Euler(0,0,180)).gameObject.SetActive(true);
             }
         }
 

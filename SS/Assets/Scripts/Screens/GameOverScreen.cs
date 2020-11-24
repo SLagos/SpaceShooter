@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Screen.GameOver
+namespace Screens.GameOver
 {
     public class GameOverScreen : MonoBehaviour
     {
